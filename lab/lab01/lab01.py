@@ -54,14 +54,10 @@ def double_eights(n):
     >>> double_eights(80808080)
     False
     """
-    consecutive = 0
     while n != 0:
-        if n%10 == 8:
-            consecutive += 1
-            if consecutive==2:
+        if n % 10 == 8:
+            n = n // 10
+            if n % 10 ==8:
                 return True
-        else:
-            consecutive=0
-        n = n//10
+        n = n //10
     return False
-
