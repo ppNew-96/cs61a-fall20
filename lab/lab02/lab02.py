@@ -122,9 +122,9 @@ def cycle(f1, f2, f3):
            count += 1
            if count%3==1:
                arg = f1(arg)
-           if count%3==2:
+           elif count%3==2:
                arg = f2(arg)
-           if count%3==0:
+           elif count%3==0:
                arg = f3(arg)
        return arg
     return lambda N : lambda arg : helpFunction(N,arg)
