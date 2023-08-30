@@ -127,8 +127,8 @@ def hailstone(n):
     """
     count = 1
     while n!=1:
-        print(int(n))
-        n = n/2 if n%2==0 else n*3+1
+        print(n)
+        n = n//2 if n%2==0 else n*3+1
         count = count+1
     print(1)
     return count
