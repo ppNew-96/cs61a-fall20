@@ -1,2 +1,6 @@
 cs61a-fall20.code-workspace
 __pycache__/
+.DS_Store
+.ok_history
+.ok_storage.db
+temp.py
