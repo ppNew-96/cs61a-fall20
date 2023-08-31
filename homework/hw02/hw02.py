@@ -137,8 +137,17 @@ def count_coins(total):
     >>> check(HW_SOURCE_FILE, 'count_coins', ['While', 'For'])
     True
     """
-    "*** YOUR CODE HERE ***"
-
+    def cc_helper(target, smallest_coin):
+        if target == 0:
+            return 1
+        elif target<0:
+            return 0
+        elif not smallest_coin:
+            return 0
+        else:
+            return cc_helper(target-smallest_coin, smallest_coin)+ \
+                cc_helper(target, next_largest_coin(smallest_coin))
+    return cc_helper(total, 1)
 
 from operator import sub, mul
 
@@ -152,5 +161,4 @@ def make_anonymous_factorial():
     >>> check(HW_SOURCE_FILE, 'make_anonymous_factorial', ['Assign', 'AugAssign', 'FunctionDef', 'Recursion'])
     True
     """
-    return 'YOUR_EXPRESSION_HERE'
-
+    return lambda b: (lambda a, b: a(a, b))(lambda a, b: b*a(a, b-1) if b > 0 else 1,b)
