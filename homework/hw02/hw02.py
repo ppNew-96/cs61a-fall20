@@ -24,8 +24,7 @@ def num_eights(x):
     """
     if x == 0:
         return 0
-    else:
-        return num_eights(x//10) + (1 if x%10==8 else 0)
+    return 1+num_eights(x//10) if x%10 == 8 else num_eights(x//10)
 
 def pingpong(n):
     """Return the nth element of the ping-pong sequence.
@@ -59,15 +58,13 @@ def pingpong(n):
     >>> check(HW_SOURCE_FILE, 'pingpong', ['Assign', 'AugAssign'])
     True
     """
-    def pp_help(index, direct, result):
+    def help(num, direct, index):
         if index == n:
-            return result
-        else:
-            if index % 8 == 0 or num_eights(index):
-                return pp_help(index+1, -direct, result-direct)
-            else:
-                return pp_help(index+1, direct, result+direct)
-    return pp_help(1, 1, 1)
+            return num
+        if num_eights(index)!=0 or index%8==0:
+            return help(num-direct, -direct, index+1)
+        return help(num+direct, direct, index+1)
+    return help(1, 1, 1)
 
 def missing_digits(n):
     """Given a number a that is in sorted, increasing order,
@@ -98,10 +95,9 @@ def missing_digits(n):
     """
     if n < 10:
         return 0
-    gap = n%10 - (n//10)%10
-    if gap > 1:
-        return missing_digits(n//10)+gap-1
-    return missing_digits(n//10)
+    gap = n%10 - (n//10)%10 - 1
+
+    return gap + missing_digits(n//10) if gap > 0 else missing_digits(n//10)
 
 
 def next_largest_coin(coin):
@@ -137,17 +133,16 @@ def count_coins(total):
     >>> check(HW_SOURCE_FILE, 'count_coins', ['While', 'For'])
     True
     """
-    def cc_helper(target, smallest_coin):
-        if target == 0:
+    def help(total, smallest):
+        if total == 0:
             return 1
-        elif target<0:
+        elif total < 0:
             return 0
-        elif not smallest_coin:
+        elif not smallest:
             return 0
-        else:
-            return cc_helper(target-smallest_coin, smallest_coin)+ \
-                cc_helper(target, next_largest_coin(smallest_coin))
-    return cc_helper(total, 1)
+        next_smallest = next_largest_coin(smallest)
+        return help(total - smallest, smallest) + help(total, next_smallest)
+    return help(total, 1)
 
 from operator import sub, mul
 
