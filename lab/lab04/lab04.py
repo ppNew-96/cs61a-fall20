@@ -110,11 +110,9 @@ def max_subseq(n, t):
         return 0
     if n < 10:
         return n
-
-    keep_last = n%10
-    drop_last = n // 10
-
-    return max(10*max_subseq(n//10, t-1)+keep_last, max_subseq(drop_last, t))
+    with_current_digit = max_subseq(n//10, t-1)*10+n%10
+    without_current_digit = max_subseq(n//10, t)
+    return max(with_current_digit, without_current_digit)
 
 def add_chars(w1, w2):
     """
@@ -144,4 +142,4 @@ def add_chars(w1, w2):
     """
     if w1 == "":
         return w2
-    return add_chars(w1[1:],w2[1:]) if w1[0]==w2[0] else w2[0]+add_chars(w1,w2[1:])
+    return add_chars(w1[1:],w2[1:]) if w1[0] == w2[0] else w2[0] + add_chars(w1,w2[1:])
