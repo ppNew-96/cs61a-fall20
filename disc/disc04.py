@@ -39,6 +39,11 @@ def count_k(n, k):
 # that keeps only the even-indexed elements of s and multiplies them by their
 # corresponding index.
 def even_weighted(s):
+    """
+    >>> x = [1, 2, 3, 4, 5, 6]
+    >>> even_weighted(x)
+    [0, 6, 20]
+    """
     return [index * s[index] for index in range(len(s)) if index % 2 == 0]
 
 
