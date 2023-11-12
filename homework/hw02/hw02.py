@@ -1,4 +1,4 @@
-HW_SOURCE_FILE=__file__
+HW_SOURCE_FILE = __file__
 
 
 def num_eights(x):
@@ -24,7 +24,8 @@ def num_eights(x):
     """
     if x == 0:
         return 0
-    return 1+num_eights(x//10) if x%10 == 8 else num_eights(x//10)
+    return 1 + num_eights(x // 10) if x % 10 == 8 else num_eights(x // 10)
+
 
 def pingpong(n):
     """Return the nth element of the ping-pong sequence.
@@ -58,13 +59,16 @@ def pingpong(n):
     >>> check(HW_SOURCE_FILE, 'pingpong', ['Assign', 'AugAssign'])
     True
     """
+
     def help(num, direct, index):
         if index == n:
             return num
-        if num_eights(index)!=0 or index%8==0:
-            return help(num-direct, -direct, index+1)
-        return help(num+direct, direct, index+1)
+        if num_eights(index) != 0 or index % 8 == 0:
+            return help(num - direct, -direct, index + 1)
+        return help(num + direct, direct, index + 1)
+
     return help(1, 1, 1)
+
 
 def missing_digits(n):
     """Given a number a that is in sorted, increasing order,
@@ -95,9 +99,10 @@ def missing_digits(n):
     """
     if n < 10:
         return 0
-    gap = n%10 - (n//10)%10 - 1
+    gap = n % 10 - (n // 10) % 10 - 1
 
-    return gap + missing_digits(n//10) if gap > 0 else missing_digits(n//10)
+    return gap + missing_digits(n // 10) if gap > 0 else missing_digits(n //
+                                                                        10)
 
 
 def next_largest_coin(coin):
@@ -133,6 +138,7 @@ def count_coins(total):
     >>> check(HW_SOURCE_FILE, 'count_coins', ['While', 'For'])
     True
     """
+
     def help(total, smallest):
         if total == 0:
             return 1
@@ -142,9 +148,12 @@ def count_coins(total):
             return 0
         next_smallest = next_largest_coin(smallest)
         return help(total - smallest, smallest) + help(total, next_smallest)
+
     return help(total, 1)
 
+
 from operator import sub, mul
+
 
 def make_anonymous_factorial():
     """Return the value of an expression that computes factorial.
@@ -156,4 +165,5 @@ def make_anonymous_factorial():
     >>> check(HW_SOURCE_FILE, 'make_anonymous_factorial', ['Assign', 'AugAssign', 'FunctionDef', 'Recursion'])
     True
     """
-    return lambda b: (lambda a, b: a(a, b))(lambda a, b: b*a(a, b-1) if b > 0 else 1,b)
+    return lambda b: (lambda a, b: a(a, b))(lambda a, b: b * a(a, b - 1)
+                                            if b > 0 else 1, b)
