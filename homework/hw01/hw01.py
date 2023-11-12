@@ -1,5 +1,6 @@
 from operator import add, sub
 
+
 def a_plus_abs_b(a, b):
     """Return a+abs(b), but without calling abs.
 
@@ -37,7 +38,8 @@ def two_of_three(x, y, z):
     >>> [type(x).__name__ for x in ast.parse(inspect.getsource(two_of_three)).body[0].body]
     ['Expr', 'Return']
     """
-    return y**2+z**2 if max(x,y,z)==x else x**2+y**2 if max(x,y,z)==z else x**2+z**2
+    return y**2 + z**2 if max(
+        x, y, z) == x else x**2 + y**2 if max(x, y, z) == z else x**2 + z**2
 
 
 def largest_factor(n):
@@ -50,13 +52,12 @@ def largest_factor(n):
     >>> largest_factor(13) # factor is 1 since 13 is prime
     1
     """
-    "*** YOUR CODE HERE ***"
-    k=2
+    k = 2
     result = 1
-    while k<=n//2:
-        if n % k ==0:
+    while k <= n // 2:
+        if n % k == 0:
             return n // k
-        k = k+1
+        k = k + 1
     return result
 
 
@@ -91,6 +92,7 @@ def with_if_statement():
     else:
         return false_func()
 
+
 def with_if_function():
     """
     >>> result = with_if_function()
@@ -101,14 +103,18 @@ def with_if_function():
     """
     return if_function(cond(), true_func(), false_func())
 
+
 def cond():
     return False
+
 
 def true_func():
     print(42)
 
+
 def false_func():
     print(47)
+
 
 def hailstone(n):
     """Print the hailstone sequence starting at n and return its
@@ -126,9 +132,9 @@ def hailstone(n):
     7
     """
     count = 1
-    while n!=1:
+    while n != 1:
         print(n)
-        n = n//2 if n%2==0 else n*3+1
-        count = count+1
+        n = n // 2 if n % 2 == 0 else n * 3 + 1
+        count = count + 1
     print(1)
     return count
