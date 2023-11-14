@@ -1,4 +1,4 @@
-HW_SOURCE_FILE=__file__
+HW_SOURCE_FILE = __file__
 
 
 def mobile(left, right):
@@ -7,61 +7,71 @@ def mobile(left, right):
     assert is_arm(right), "right must be a arm"
     return ['mobile', left, right]
 
+
 def is_mobile(m):
     """Return whether m is a mobile."""
     return type(m) == list and len(m) == 3 and m[0] == 'mobile'
+
 
 def left(m):
     """Select the left arm of a mobile."""
     assert is_mobile(m), "must call left on a mobile"
     return m[1]
 
+
 def right(m):
     """Select the right arm of a mobile."""
     assert is_mobile(m), "must call right on a mobile"
     return m[2]
+
 
 def arm(length, mobile_or_planet):
     """Construct a arm: a length of rod with a mobile or planet at the end."""
     assert is_mobile(mobile_or_planet) or is_planet(mobile_or_planet)
     return ['arm', length, mobile_or_planet]
 
+
 def is_arm(s):
     """Return whether s is a arm."""
     return type(s) == list and len(s) == 3 and s[0] == 'arm'
+
 
 def length(s):
     """Select the length of a arm."""
     assert is_arm(s), "must call length on a arm"
     return s[1]
 
+
 def end(s):
     """Select the mobile or planet hanging at the end of a arm."""
     assert is_arm(s), "must call end on a arm"
     return s[2]
+
 
 def planet(size):
     """Construct a planet of some size."""
     assert size > 0
     return ['planet', size]
 
+
 def size(w):
     """Select the size of a planet."""
     assert is_planet(w), 'must call size on a planet'
     return w[1]
 
+
 def is_planet(w):
     """Whether w is a planet."""
     return type(w) == list and len(w) == 2 and w[0] == 'planet'
 
+
 def examples():
-    t = mobile(arm(1, planet(2)),
-               arm(2, planet(1)))
+    t = mobile(arm(1, planet(2)), arm(2, planet(1)))
     u = mobile(arm(5, planet(1)),
-               arm(1, mobile(arm(2, planet(3)),
-                              arm(3, planet(2)))))
+               arm(1, mobile(arm(2, planet(3)), arm(3, planet(2)))))
     v = mobile(arm(4, t), arm(2, u))
     return (t, u, v)
+
 
 def total_weight(m):
     """Return the total weight of m, a planet or mobile.
@@ -83,6 +93,7 @@ def total_weight(m):
     else:
         assert is_mobile(m), "must get total weight of a mobile or a planet"
         return total_weight(end(left(m))) + total_weight(end(right(m)))
+
 
 def balanced(m):
     """Return whether m is balanced.
@@ -114,6 +125,7 @@ def balanced(m):
     if left_torque != right_torque:
         return False
     return True
+
 
 def totals_tree(m):
     """Return a tree representing the mobile with its total weight at the root.
@@ -149,7 +161,10 @@ def totals_tree(m):
     if is_planet(m):
         return tree(total_weight(m))
 
-    return tree(total_weight(m), [totals_tree(end(left(m))), totals_tree(end(right(m)))])
+    return tree(total_weight(m),
+                [totals_tree(end(left(m))),
+                 totals_tree(end(right(m)))])
+
 
 def replace_leaf(t, find_value, replace_value):
     """Returns a new tree where every leaf value equal to find_value has
@@ -183,11 +198,14 @@ def replace_leaf(t, find_value, replace_value):
     assert is_tree(t) or is_leaf(t)
 
     if is_leaf(t):
-        if label(t)==find_value:
+        if label(t) == find_value:
             t = tree(replace_value)
         return t
 
-    new_branches = [replace_leaf(branch, find_value, replace_value) for branch in branches(t)]
+    new_branches = [
+        replace_leaf(branch, find_value, replace_value)
+        for branch in branches(t)
+    ]
 
     return tree(label(t), new_branches)
 
@@ -208,6 +226,7 @@ def preorder(t):
     for branch in branches(t):
         numbers.extend(preorder(branch))
     return numbers
+
 
 def has_path(t, word):
     """Return whether there is a path in a tree where the entries along the path
@@ -241,30 +260,37 @@ def has_path(t, word):
     assert is_tree(t)
 
     if len(word) == 1:
-        if label(t) == word[0]:
+        if word[0] == label(t):
             return True
         return False
 
-    compare_results = [has_path(branch, word[1:]) for branch in branches(t) if label(t) == word[0]]
-    return True in compare_results
+    sub_compare = [
+        has_path(branch, word[1:]) for branch in branches(t)
+        if label(t) == word[0]
+    ]
+    return True in sub_compare
 
 
 def interval(a, b):
     """Construct an interval from a to b."""
     return [a, b]
 
+
 def lower_bound(x):
     """Return the lower bound of interval x."""
     return x[0]
+
 
 def upper_bound(x):
     """Return the upper bound of interval x."""
     return x[1]
 
+
 def str_interval(x):
     """Return a string representation of interval x.
     """
     return '{0} to {1}'.format(lower_bound(x), upper_bound(x))
+
 
 def add_interval(x, y):
     """Return an interval that contains the sum of any value in interval x and
@@ -272,6 +298,8 @@ def add_interval(x, y):
     lower = lower_bound(x) + lower_bound(y)
     upper = upper_bound(x) + upper_bound(y)
     return interval(lower, upper)
+
+
 def mul_interval(x, y):
     """Return the interval that contains the product of any value in x and any
     value in y."""
@@ -289,23 +317,27 @@ def sub_interval(x, y):
     up = upper_bound(x) - lower_bound(y)
     return interval(low, up)
 
+
 def div_interval(x, y):
     """Return the interval that contains the quotient of any value in x divided by
     any value in y. Division is implemented as the multiplication of x by the
     reciprocal of y."""
     assert lower_bound(y) * upper_bound(y) > 0
-    reciprocal_y = interval(1/upper_bound(y), 1/lower_bound(y))
+    reciprocal_y = interval(1 / upper_bound(y), 1 / lower_bound(y))
     return mul_interval(x, reciprocal_y)
 
 
 def par1(r1, r2):
     return div_interval(mul_interval(r1, r2), add_interval(r1, r2))
 
+
 def par2(r1, r2):
     one = interval(1, 1)
     rep_r1 = div_interval(one, r1)
     rep_r2 = div_interval(one, r2)
     return div_interval(one, add_interval(rep_r1, rep_r2))
+
+
 def check_par():
     """Return two intervals that give different results for parallel resistors.
 
@@ -315,8 +347,8 @@ def check_par():
     >>> lower_bound(x) != lower_bound(y) or upper_bound(x) != upper_bound(y)
     True
     """
-    r1 = interval(1, 2) # Replace this line!
-    r2 = interval(1, 1) # Replace this line!
+    r1 = interval(1, 2)  # Replace this line!
+    r2 = interval(1, 1)  # Replace this line!
     return r1, r2
 
 
@@ -333,6 +365,7 @@ def quadratic(x, a, b, c):
     >>> str_interval(quadratic(interval(1, 3), 2, -3, 1))
     '0 to 10'
     """
+
     def quadratic_value(var, a, b, c):
         return a * var * var + b * var + c
 
@@ -347,7 +380,9 @@ def quadratic(x, a, b, c):
 
     return interval(min(values), max(values))
 
+
 # Tree ADT
+
 
 def tree(label, branches=[]):
     """Construct a tree with the given label value and a list of branches."""
@@ -355,13 +390,16 @@ def tree(label, branches=[]):
         assert is_tree(branch), 'branches must be trees'
     return [label] + list(branches)
 
+
 def label(tree):
     """Return the label value of a tree."""
     return tree[0]
 
+
 def branches(tree):
     """Return the list of branches of the given tree."""
     return tree[1:]
+
 
 def is_tree(tree):
     """Returns True if the given tree is a tree, and False otherwise."""
@@ -372,11 +410,13 @@ def is_tree(tree):
             return False
     return True
 
+
 def is_leaf(tree):
     """Returns True if the given tree's list of branches is empty, and False
     otherwise.
     """
     return not branches(tree)
+
 
 def print_tree(t, indent=0):
     """Print a representation of this tree in which each node is
@@ -401,6 +441,7 @@ def print_tree(t, indent=0):
     for b in branches(t):
         print_tree(b, indent + 1)
 
+
 def copy_tree(t):
     """Returns a copy of t. Only for testing purposes.
 
@@ -411,4 +452,3 @@ def copy_tree(t):
     5
     """
     return tree(label(t), [copy_tree(b) for b in branches(t)])
-
